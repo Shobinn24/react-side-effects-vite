@@ -1,31 +1,162 @@
-# React Side Effects Lab
+# Programming Joke Fetcher 
 
-## Overview
-This lab demonstrates how to handle **side effects** in React using the `useEffect` hook. The app fetches and displays a random **programming joke** when the page loads and allows users to fetch a new joke with a button click.
+A React application that fetches and displays random programming jokes using the JokeAPI. Built as part of the Flatiron School Full-Stack Software Engineering program to demonstrate React hooks, state management, and API integration.
 
-## Setup
+## Features
 
-Run `npm install` to install dependencies.
+- Fetches a programming joke automatically when the page loads
+- "Get a New Joke" button to fetch additional jokes on demand
+- Loading state indicator while waiting for API responses
+- Clean, responsive UI with styled components
+- Error handling for failed API requests
 
-Then, run `npm run dev` to start up the React app at `http://localhost:5173`.
+## Technologies Used
 
-In another tab, run `npm run test` to run the test suite.
+- **React** - Frontend framework
+- **Vite** - Build tool and development server
+- **JokeAPI** - External API for programming jokes
+- **React Hooks** - `useState` and `useEffect` for state and side effects
+- **Vitest** - Testing framework
+- **React Testing Library** - Component testing utilities
 
-Before you start building out the application, examine the current code and component hierarchy. This will tell you how components can pass data to each other as well as where that information should be stored.
+## Project Structure
 
-## Deliverables
+```
+src/
+├── App.jsx              # Main component with state and API logic
+├── App.css              # Styling for the application
+├── components/
+│   ├── FetchButton.jsx  # Button component for fetching new jokes
+│   └── JokeDisplay.jsx  # Component for displaying jokes and loading state
+└── __tests__/
+    └── App.test.jsx     # Test suite for the application
+```
 
-- **When our application loads**, make a `GET` request to `https://v2.jokeapi.dev/joke/Programming?type=single` to fetch a joke. Given your component tree, think about which component should be responsible for managing the joke data. Once the data is fetched, store it in state and render the joke on the page.
+## Component Breakdown
 
-- **When the `New Joke` button is clicked**, make another `GET` request to `https://v2.jokeapi.dev/joke/Programming?type=single` to fetch a new joke. Update the state accordingly so that the new joke replaces the old one in the UI.
+### App.jsx
+- **State Management**: Uses `useState` to manage joke data and loading state
+- **Side Effects**: Uses `useEffect` to fetch initial joke on component mount
+- **API Integration**: Contains `fetchJoke` async function for API calls
+- **Props Drilling**: Passes state and functions to child components
 
-- **While waiting for the fetch request to resolve**, display a loading message to inform the user that a joke is being fetched.
+### FetchButton.jsx
+- Receives `fetchJoke` function as a prop
+- Triggers new joke fetch on button click
+- Simple, reusable button component
 
-- **If the API request fails**, handle the error gracefully by displaying a message instead of breaking the UI.
+### JokeDisplay.jsx
+- Receives `joke` and `loading` state as props
+- Conditional rendering using ternary operator
+- Displays "Loading..." or the actual joke text
 
-## Best Practices
+## Setup and Installation
 
-- Use the `useEffect` hook to make API calls at the appropriate lifecycle phase.
-- Manage component state using the `useState` hook.
-- Keep components modular and reusable.
-- Remove unnecessary console logs and commented-out code before submission.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Shobinn24/react-side-effects-vite.git
+   cd react-side-effects-vite
+   ```
+
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
+
+3. **Run the development server**
+   ```bash
+   npm run dev
+   ```
+
+4. **Open in browser**
+   Navigate to `http://localhost:5173` (or the port shown in your terminal)
+
+## Running Tests
+
+```bash
+npm test
+```
+
+The test suite includes:
+- Loading state verification
+- Initial joke fetch on component mount
+- New joke fetch on button click
+
+## API Reference
+
+This project uses the [JokeAPI v2](https://v2.jokeapi.dev/)
+
+**Endpoint**: `https://v2.jokeapi.dev/joke/Programming?type=single`
+
+
+## Key Concepts Demonstrated
+
+### 1. State Management with `useState`
+```javascript
+const [joke, setJoke] = useState('')
+const [loading, setLoading] = useState(true)
+```
+
+### 2. Side Effects with `useEffect`
+```javascript
+useEffect(() => {
+  fetchJoke()
+}, []) // Empty dependency array = runs once on mount
+```
+
+### 3. Async/Await for API Calls
+```javascript
+const fetchJoke = async () => {
+  setLoading(true)
+  try {
+    const response = await fetch(API_URL)
+    const data = await response.json()
+    setJoke(data.joke)
+  } catch (error) {
+    console.error('Error fetching joke:', error)
+  } finally {
+    setLoading(false)
+  }
+}
+```
+
+### 4. Props and Component Communication
+- Parent component (`App`) manages state
+- Child components receive data/functions via props
+- Unidirectional data flow
+
+### 5. Conditional Rendering
+```javascript
+<p>{loading ? 'Loading...' : joke}</p>
+```
+
+## Learning Objectives
+
+This project covers:
+- Using React Hooks (`useState`, `useEffect`)
+- Fetching data from external APIs
+- Managing loading states
+- Component composition and props
+- Event handling in React
+- Conditional rendering
+- Error handling in async operations
+- Writing and passing component tests
+
+## Future Enhancements
+
+- Add joke categories filter
+- Implement joke favorites/bookmarking
+- Add animations for joke transitions
+- Include joke rating system
+- Add dark mode toggle
+- Share jokes on social media
+
+## Author
+
+**Shobinn Clark**  
+Full-Stack Software Engineering Student @ Flatiron School  
+
+## License
+
+This project is part of the Flatiron School curriculum and is intended for educational purposes.
+
